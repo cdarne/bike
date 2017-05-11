@@ -1,0 +1,66 @@
+<link rel="import" href="/assets/polymer/polymer.html">
+
+<link rel="import" href="/assets/iron-icon/iron-icon.html">
+<link rel="import" href="/assets/iron-icons/maps-icons.html">
+
+<link rel="import" href="/assets/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="/assets/app-layout/app-header/app-header.html">
+<link rel="import" href="/assets/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="/assets/app-layout/app-scroll-effects/effects/waterfall.html">
+
+<link rel="import" href="/assets/paper-progress/paper-progress.html">
+
+<dom-module id="bike-app">
+    <template>
+        <style>
+            :host {
+                position: relative;
+                display: block;
+            }
+
+            app-header {
+                color: #fff;
+                background-color: var(--primary-color);
+            }
+
+            #content {
+                max-width: 1000px;
+                margin: 10px auto;
+                width: 100%;
+            }
+
+            paper-progress {
+                width: 100%;
+            }
+            app-toolbar > iron-icon {
+                margin-right: 15px;
+            }
+        </style>
+
+        <app-header-layout fullbleed>
+            <app-header fixed condenses effects="waterfall">
+                <app-toolbar>
+                    <iron-icon icon="maps:directions-bike"></iron-icon>
+                    <div main-title>Bike stations status</div>
+                    <paper-progress indeterminate hidden$="[[!loading]]" bottom-item></paper-progress>
+                </app-toolbar>
+            </app-header>
+            <div id="content">
+                <content></content>
+            </div>
+        </app-header-layout>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'bike-app',
+
+            properties: {
+                loading: {
+                    type: Boolean,
+                    value: false
+                }
+            }
+        });
+    </script>
+</dom-module>

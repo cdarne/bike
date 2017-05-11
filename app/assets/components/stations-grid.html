@@ -1,0 +1,158 @@
+<link rel="import" href="/assets/polymer/polymer.html">
+
+<link rel="import" href="/assets/iron-ajax/iron-ajax.html">
+<link rel="import" href="/assets/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="/assets/iron-icon/iron-icon.html">
+<link rel="import" href="/assets/iron-icons/iron-icons.html">
+<link rel="import" href="/assets/iron-icons/maps-icons.html">
+
+<link rel="import" href="/assets/paper-item/paper-icon-item.html">
+<link rel="import" href="/assets/paper-input/paper-input.html">
+<link rel="import" href="/assets/paper-checkbox/paper-checkbox.html">
+
+<link rel="import" href="/assets/vaadin-grid/vaadin-grid.html">
+
+<dom-module id="stations-grid">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            vaadin-grid {
+                width: 100%;
+                height: 100%;
+            }
+
+            #filters {
+                @apply(--layout-horizontal);
+            }
+
+            #filters > * {
+                @apply(--layout-flex);
+            }
+
+            .filter-option {
+                @apply(--layout-horizontal);
+                margin: 5px 10px;
+            }
+
+            .filter-option > * {
+                align-self: flex-end;
+            }
+
+            .filter-option > :not(paper-input) {
+                padding: 8px 0;
+            }
+
+            .filter-option > .flex {
+                @apply(--layout-flex);
+            }
+
+            .filter-option > iron-icon {
+                margin-right: 5px;
+            }
+
+            .filter-option > paper-checkbox {
+                padding-bottom: 11px;
+            }
+        </style>
+
+        <div id="filters">
+            <div class="filter-option">
+                <paper-input class="flex" label="Search radius (km)" value="{{radius}}" type="number" step="0.1">
+                    <iron-icon icon="search" prefix></iron-icon>
+                </paper-input>
+            </div>
+
+            <div class="filter-option">
+                <iron-icon icon="maps:my-location"></iron-icon>
+                <span class="flex"><strong>Around: </strong><em>{{location.name}}</em></span>
+            </div>
+
+            <div class="filter-option">
+                <paper-checkbox class="flex" checked="{{showEmpty}}">Show empty stations</paper-checkbox>
+            </div>
+        </div>
+
+        <iron-ajax url="[[url]]"
+                   params="[[_buildParams(radius, location, showEmpty)]]"
+                   handle-as="json"
+                   debounce-duration="300"
+                   loading="{{loading}}"
+                   last-response="{{stations}}"
+                   on-error="_requestError"
+                   auto></iron-ajax>
+
+        <vaadin-grid items='[[stations]]'>
+            <vaadin-grid-column width="150px">
+                <template class="header">Name</template>
+                <template>[[item.name]]</template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="40px">
+                <template class="header">Distance (km)</template>
+                <template>[[_round(item.distance)]]</template>
+            </vaadin-grid-column>
+            <vaadin-grid-column width="20px">
+                <template class="header">Available bikes</template>
+                <template>[[item.available_bikes]]</template>
+            </vaadin-grid-column>
+        </vaadin-grid>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'stations-grid',
+
+            properties: {
+                url: {
+                    type: String,
+                    value: ""
+                },
+                location: {
+                    type: Object,
+                    value: function () {
+                        return {name: "FX Innovation", latitude: 45.506318, longitude: -73.569021}
+                    }
+                },
+                radius: {
+                    type: Number,
+                    value: 0.5
+                },
+                stations: {
+                    type: Array,
+                    value: function () {
+                        return [];
+                    }
+                },
+                loading: {
+                    type: Boolean,
+                    value: false,
+                    notify: true
+                },
+                showEmpty: {
+                    type: Boolean,
+                    value: true
+                }
+            },
+            _buildParams: function (radius, location, showEmpty) {
+                return {radius: radius, latitude: location.latitude, longitude: location.longitude, empty: showEmpty};
+            },
+            _round: function (distance) {
+                if (distance) {
+                    return distance.toFixed(2);
+                } else {
+                    return distance;
+                }
+            },
+            _requestError: function(event) {
+                var response = event.detail.request.response;
+                var message = "Failed to load data";
+                if (response && response.error) {
+                    message += ": " + response.error;
+                }
+                this.fire('error', {message: message});
+            }
+        });
+    </script>
+</dom-module>

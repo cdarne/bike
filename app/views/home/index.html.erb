@@ -1,0 +1,13 @@
+<stations-grid id="grid" url="<%= stations_path(format: :json) %>"></stations-grid>
+
+<script>
+    var grid = document.getElementById('grid');
+    grid.addEventListener('loading-changed', function() {
+        app.loading = grid.loading;
+    });
+
+    grid.addEventListener('error', function(event) {
+        toast.text = event.detail.message;
+        toast.show();
+    });
+</script>

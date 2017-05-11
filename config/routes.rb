@@ -1,0 +1,4 @@
+Rails.application.routes.draw do
+  resources :stations, only: [:index]
+  root 'home#index'
+end

@@ -1,0 +1,13 @@
+default: &default
+  url: https://secure.bixi.com/data/stations.json
+  ttl: 5
+
+development:
+  <<: *default
+
+production:
+  <<: *default
+
+test:
+  <<: *default
+  url: spec/data/stations.json
