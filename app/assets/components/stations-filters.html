@@ -1,0 +1,92 @@
+<link rel="import" href="/assets/polymer/polymer.html">
+
+<link rel="import" href="/assets/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="/assets/iron-icon/iron-icon.html">
+<link rel="import" href="/assets/iron-icons/iron-icons.html">
+<link rel="import" href="/assets/iron-icons/maps-icons.html">
+
+<link rel="import" href="/assets/paper-item/paper-icon-item.html">
+<link rel="import" href="/assets/paper-input/paper-input.html">
+<link rel="import" href="/assets/paper-checkbox/paper-checkbox.html">
+
+<dom-module id="stations-filters">
+    <template>
+        <style>
+            :host {
+                display: block;
+                @apply(--layout-horizontal);
+            }
+
+            .filter-option {
+                @apply(--layout-flex);
+                @apply(--layout-horizontal);
+                margin: 5px 10px;
+            }
+
+            .filter-option > * {
+                align-self: flex-end;
+            }
+
+            .filter-option > :not(paper-input) {
+                padding: 8px 0;
+            }
+
+            .filter-option > .flex {
+                @apply(--layout-flex);
+            }
+
+            .filter-option > iron-icon {
+                margin-right: 5px;
+            }
+
+            .filter-option > paper-checkbox {
+                padding-bottom: 11px;
+            }
+        </style>
+
+
+        <div class="filter-option">
+            <paper-input class="flex" label="Search radius (km)" value="{{radius}}" type="number" step="0.1" min="0.1">
+                <iron-icon icon="search" prefix></iron-icon>
+            </paper-input>
+        </div>
+
+        <div class="filter-option">
+            <iron-icon icon="maps:my-location"></iron-icon>
+            <span class="flex"><strong>Around: </strong><em>{{location.name}}</em></span>
+        </div>
+
+        <div class="filter-option">
+            <paper-checkbox class="flex" checked="{{showEmpty}}">Show empty stations</paper-checkbox>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'stations-filters',
+
+            properties: {
+                location: {
+                    type: Object,
+                    value: function () {
+                        return {name: "FX Innovation", latitude: 45.506318, longitude: -73.569021}
+                    },
+                    notify: true,
+                    reflectToAttribute: true
+                },
+                radius: {
+                    type: Number,
+                    value: 0.5,
+                    notify: true,
+                    reflectToAttribute: true
+                },
+                showEmpty: {
+                    type: Boolean,
+                    value: true,
+                    notify: true,
+                    reflectToAttribute: true
+                }
+            }
+        });
+    </script>
+</dom-module>
