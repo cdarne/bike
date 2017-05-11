@@ -2,6 +2,7 @@ Bike
 ====
 
 This project is a simple web app to fetch and find the BIXI stations downtown Montreal.
+You can test it online [here](https://bike-status.herokuapp.com/) (https://bike-status.herokuapp.com/)
 
 Ruby version
 ------------
