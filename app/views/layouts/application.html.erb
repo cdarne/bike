@@ -7,7 +7,8 @@
   <%= csrf_meta_tags %>
   <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-  <link rel="import" href="<%= asset_path 'application.html' %>">
+  <script src="/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+  <%= tag :link, rel: "import", href: Rails.application.config.assets.component_manifest_href %>
 </head>
 
 <body unresolved>

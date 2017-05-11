@@ -12,5 +12,4 @@
 //
 //= require rails-ujs
 //= require turbolinks
-//= require webcomponentsjs/webcomponents-lite
 //= require_tree .

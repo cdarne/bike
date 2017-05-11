@@ -10,10 +10,8 @@
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
-/vendor/assets/components/*
 !/log/.keep
 !/tmp/.keep
-!/vendor/assets/components/.keep
 
 /node_modules
 /yarn-error.log
@@ -21,3 +19,7 @@
 /public/assets
 
 .byebug_history
+
+# bower dependencies
+/public/bower_components/
+/public/application.min.html
